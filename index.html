@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shunya Nakabayashi - Live Schedule</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#top" class="nav-brand">Shunya Nakabayashi</a>
+      <button class="nav-toggle" id="navToggle" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#top">HOME</a></li>
+        <li><a href="#schedule">LIVE SCHEDULE</a></li>
+        <li><a href="#profile">PROFILE</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="top">
+    <div class="hero-content">
+      <h1 class="hero-name">Shunya Nakabayashi</h1>
+      <p class="hero-subtitle">Alto Saxophone</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- Live Schedule -->
+    <section id="schedule" class="section">
+      <h2 class="section-title">LIVE SCHEDULE</h2>
+
+      <div id="loading" class="loading">読み込み中...</div>
+      <div id="no-events" class="no-events" style="display:none;">
+        現在、予定されているライブはありません。
+      </div>
+
+      <!-- Upcoming events (grouped by month) -->
+      <div id="upcoming-container"></div>
+
+      <!-- Past lives -->
+      <div class="past-section">
+        <h3 class="past-title">Past Live</h3>
+        <div id="past-container"></div>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="profile" class="section section-alt">
+      <h2 class="section-title">PROFILE</h2>
+      <div class="profile-content">
+        <p>
+          中林俊也（Shunya Nakabayashi）<br>
+          アルトサックス奏者。
+        </p>
+        <p>
+          <a href="https://note.com/shunya_altosax/m/me6ca3693c3af" target="_blank" rel="noopener" class="external-link">
+            note.com でも情報を発信しています &rarr;
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <h2 class="section-title">CONTACT</h2>
+      <div class="contact-content">
+        <p>お問い合わせは以下よりご連絡ください。</p>
+        <a href="https://note.com/shunya_altosax" target="_blank" rel="noopener" class="btn">note をフォロー</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Shunya Nakabayashi. All rights reserved.</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

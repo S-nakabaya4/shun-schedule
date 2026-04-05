@@ -1,0 +1,18 @@
+# Netlify 設定ファイル
+# このファイルは Netlify へのデプロイ設定です。変更不要です。
+
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# data.json は CORS を許可（Google スプレッドシート連携時のフォールバック用）
+[[headers]]
+  for = "/data.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
