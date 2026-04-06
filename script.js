@@ -4,18 +4,50 @@
  * データソースの優先順位:
  *   1. config.js の SHEETS_CSV_URL が設定されている → Google スプレッドシートから取得
  *   2. 未設定 → data.json のサンプルデータを使用
+ *
+ * スプレッドシートの列順は自動検出します（ヘッダー行を読み取る）。
+ * Google フォームで自動追加される「Timestamp」列にも対応しています。
+ *
+ * 対応しているヘッダー名（どの列にあっても自動で認識）:
+ *   日付, date       → 日付
+ *   曜日, day        → 曜日
+ *   時間, time       → 開演時間
+ *   会場, venue      → 会場
+ *   出演者, members  → 出演メンバー
+ *   チャージ, charge → チャージ
+ *   備考, note       → 備考
  */
 
 // ── ナビゲーション（ハンバーガーメニュー） ────────────────
 document.getElementById("navToggle").addEventListener("click", () => {
   document.getElementById("navLinks").classList.toggle("open");
 });
-// メニュー項目クリック時に閉じる
 document.querySelectorAll(".nav-links a").forEach(link => {
   link.addEventListener("click", () => {
     document.getElementById("navLinks").classList.remove("open");
   });
 });
+
+// ── ヘッダー名と内部フィールド名のマッピング ─────────────
+const HEADER_MAP = {
+  "日付":    "date",
+  "date":    "date",
+  "曜日":    "day",
+  "day":     "day",
+  "時間":    "time",
+  "time":    "time",
+  "開演時間": "time",
+  "会場":    "venue",
+  "venue":   "venue",
+  "出演者":   "members",
+  "出演メンバー": "members",
+  "members": "members",
+  "チャージ": "charge",
+  "charge":  "charge",
+  "料金":    "charge",
+  "備考":    "note",
+  "note":    "note",
+};
 
 // ── データ取得 ────────────────────────────────────────────
 async function loadSchedule() {
@@ -45,22 +77,39 @@ async function fetchFromSheets(url) {
   return parseCSV(text);
 }
 
-// CSV → イベントオブジェクト配列
+// CSV → イベントオブジェクト配列（ヘッダー行で列を自動検出）
 function parseCSV(csv) {
   const lines = csv.trim().split("\n");
-  // 1行目はヘッダーなのでスキップ
+  if (lines.length < 2) return [];
+
+  // 1行目: ヘッダー行を解析して列インデックスを特定
+  const headers = splitCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+  const colIndex = {};  // フィールド名 → 列インデックス
+
+  headers.forEach((h, i) => {
+    // そのままのキー（小文字）でマッチ
+    const normalized = h.replace(/\s/g, "");
+    for (const [key, field] of Object.entries(HEADER_MAP)) {
+      if (normalized === key.toLowerCase().replace(/\s/g, "")) {
+        if (colIndex[field] === undefined) colIndex[field] = i;
+      }
+    }
+  });
+
+  // 2行目以降: データ行をパース
   return lines.slice(1).map(line => {
     const cols = splitCSVLine(line);
+    const get = field => (colIndex[field] !== undefined ? (cols[colIndex[field]] || "").trim() : "");
     return {
-      date:    (cols[0] || "").trim(),
-      day:     (cols[1] || "").trim(),
-      time:    (cols[2] || "").trim(),
-      venue:   (cols[3] || "").trim(),
-      members: (cols[4] || "").trim(),
-      charge:  (cols[5] || "").trim(),
-      note:    (cols[6] || "").trim(),
+      date:    get("date"),
+      day:     get("day"),
+      time:    get("time"),
+      venue:   get("venue"),
+      members: get("members"),
+      charge:  get("charge"),
+      note:    get("note"),
     };
-  }).filter(e => e.date); // 日付が空の行は除外
+  }).filter(e => e.date && e.date !== ""); // 日付が空の行を除外
 }
 
 // CSV の 1 行をカンマ分割（ダブルクォート対応）
@@ -85,23 +134,40 @@ function splitCSVLine(line) {
 
 // ── 日付ユーティリティ ────────────────────────────────────
 function parseDate(dateStr) {
-  // "2026-04-11" または "2026/04/11" 形式を受け付ける
-  return new Date(dateStr.replace(/\//g, "-"));
+  if (!dateStr) return new Date(NaN);
+  // "2026-04-11", "2026/04/11", "2026/4/11", "4/11/2026" などに対応
+  const s = dateStr.trim();
+
+  // YYYY-MM-DD または YYYY/MM/DD または YYYY/M/D
+  if (/^\d{4}[-\/]\d{1,2}[-\/]\d{1,2}$/.test(s)) {
+    return new Date(s.replace(/\//g, "-"));
+  }
+  // M/D/YYYY（Google フォームの一部ロケール）
+  const mdyMatch = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (mdyMatch) {
+    const [, m, d, y] = mdyMatch;
+    return new Date(`${y}-${m.padStart(2,"0")}-${d.padStart(2,"0")}`);
+  }
+  // それ以外はそのまま Date に渡す
+  return new Date(s);
 }
 
 function isUpcoming(dateStr) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return parseDate(dateStr) >= today;
+  const d = parseDate(dateStr);
+  return !isNaN(d) && d >= today;
 }
 
 function getMonthLabel(dateStr) {
   const d = parseDate(dateStr);
+  if (isNaN(d)) return "不明";
   return d.toLocaleDateString(CONFIG.LOCALE, { year: "numeric", month: "long" });
 }
 
 function formatDate(dateStr, dayStr) {
   const d = parseDate(dateStr);
+  if (isNaN(d)) return dateStr;
   const m = d.getMonth() + 1;
   const day = d.getDate();
   const dayLabel = dayStr || ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];
@@ -114,7 +180,7 @@ function renderSchedule(events) {
 
   const upcoming = events.filter(e => isUpcoming(e.date))
                          .sort((a, b) => parseDate(a.date) - parseDate(b.date));
-  const past     = events.filter(e => !isUpcoming(e.date))
+  const past     = events.filter(e => !isUpcoming(e.date) && !isNaN(parseDate(e.date)))
                          .sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
   if (upcoming.length === 0) {
@@ -146,47 +212,41 @@ function renderGrouped(events, containerId, renderFn, isPast = false) {
     labelEl.textContent = monthLabel;
     groupEl.appendChild(labelEl);
 
-    monthEvents.forEach(e => {
-      groupEl.appendChild(renderFn(e));
-    });
-
+    monthEvents.forEach(e => groupEl.appendChild(renderFn(e)));
     container.appendChild(groupEl);
   });
 }
 
-// 今後のライブ 1 件分のHTML要素
+// 今後のライブ 1 件分の HTML 要素
 function renderEventEntry(event) {
   const el = document.createElement("div");
   el.className = "event-entry";
-
-  const dateTime = `${formatDate(event.date, event.day)} ${event.time} start`;
-  const parts = [dateTime, event.venue].filter(Boolean);
-
+  const dateTime = `${formatDate(event.date, event.day)}${event.time ? " " + event.time + " start" : ""}`;
   el.innerHTML = `
     <div class="event-main">
       <span class="event-date-time">${escHtml(dateTime)}</span>
       ${event.venue ? `<span class="event-venue"> / ${escHtml(event.venue)}</span>` : ""}
     </div>
     ${event.members ? `<div class="event-members">${escHtml(event.members)}</div>` : ""}
-    ${event.charge  ? `<div class="event-charge">${escHtml(event.charge)}</div>` : ""}
-    ${event.note    ? `<div class="event-note">${escHtml(event.note)}</div>` : ""}
+    ${event.charge  ? `<div class="event-charge">${escHtml(event.charge)}</div>`  : ""}
+    ${event.note    ? `<div class="event-note">${escHtml(event.note)}</div>`      : ""}
   `;
   return el;
 }
 
-// 過去のライブ 1 件分のHTML要素
+// 過去のライブ 1 件分の HTML 要素
 function renderPastEvent(event) {
   const el = document.createElement("div");
   el.className = "past-event";
-  const dateTime = `${formatDate(event.date, event.day)} ${event.time} start`;
+  const dateTime = `${formatDate(event.date, event.day)}${event.time ? " " + event.time + " start" : ""}`;
   let text = escHtml(dateTime);
-  if (event.venue) text += ` / ${escHtml(event.venue)}`;
+  if (event.venue)   text += ` / ${escHtml(event.venue)}`;
   if (event.members) text += ` / ${escHtml(event.members)}`;
   el.innerHTML = text;
   return el;
 }
 
-// XSS対策のHTMLエスケープ
+// XSS 対策の HTML エスケープ
 function escHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
