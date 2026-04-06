@@ -77,18 +77,55 @@ async function fetchFromSheets(url) {
   return parseCSV(text);
 }
 
+// CSV 全体を行×列の2次元配列にパース（改行を含む quoted フィールドに対応）
+function parseCSVRows(csv) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < csv.length; i++) {
+    const ch = csv[i];
+    const next = csv[i + 1];
+
+    if (inQuotes) {
+      if (ch === '"' && next === '"') {
+        field += '"'; i++;           // "" → エスケープされた "
+      } else if (ch === '"') {
+        inQuotes = false;            // quoted フィールドの終端
+      } else {
+        field += ch;                 // quoted 内の文字（改行も含む）
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        row.push(field); field = ""; // フィールド区切り
+      } else if (ch === '\r' && next === '\n') {
+        row.push(field); rows.push(row); row = []; field = ""; i++; // CRLF 行区切り
+      } else if (ch === '\n') {
+        row.push(field); rows.push(row); row = []; field = "";       // LF 行区切り
+      } else {
+        field += ch;
+      }
+    }
+  }
+  // 末尾の行
+  if (field || row.length > 0) { row.push(field); rows.push(row); }
+  return rows;
+}
+
 // CSV → イベントオブジェクト配列（ヘッダー行で列を自動検出）
 function parseCSV(csv) {
-  const lines = csv.trim().split("\n");
-  if (lines.length < 2) return [];
+  const rows = parseCSVRows(csv.trim());
+  if (rows.length < 2) return [];
 
   // 1行目: ヘッダー行を解析して列インデックスを特定
-  const headers = splitCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+  const headers = rows[0].map(h => h.trim());
   const colIndex = {};  // フィールド名 → 列インデックス
 
   headers.forEach((h, i) => {
-    // そのままのキー（小文字）でマッチ
-    const normalized = h.replace(/\s/g, "");
+    const normalized = h.replace(/\s/g, "").toLowerCase();
     for (const [key, field] of Object.entries(HEADER_MAP)) {
       if (normalized === key.toLowerCase().replace(/\s/g, "")) {
         if (colIndex[field] === undefined) colIndex[field] = i;
@@ -96,9 +133,8 @@ function parseCSV(csv) {
     }
   });
 
-  // 2行目以降: データ行をパース
-  return lines.slice(1).map(line => {
-    const cols = splitCSVLine(line);
+  // 2行目以降: データ行をイベントオブジェクトに変換
+  return rows.slice(1).map(cols => {
     const get = field => (colIndex[field] !== undefined ? (cols[colIndex[field]] || "").trim() : "");
     return {
       date:    get("date"),
@@ -109,27 +145,7 @@ function parseCSV(csv) {
       charge:  get("charge"),
       note:    get("note"),
     };
-  }).filter(e => e.date && e.date !== ""); // 日付が空の行を除外
-}
-
-// CSV の 1 行をカンマ分割（ダブルクォート対応）
-function splitCSVLine(line) {
-  const result = [];
-  let current = "";
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      inQuotes = !inQuotes;
-    } else if (ch === "," && !inQuotes) {
-      result.push(current);
-      current = "";
-    } else {
-      current += ch;
-    }
-  }
-  result.push(current);
-  return result;
+  }).filter(e => e.date !== ""); // 日付が空の行を除外
 }
 
 // ── 日付ユーティリティ ────────────────────────────────────

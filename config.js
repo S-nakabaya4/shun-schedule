@@ -26,7 +26,7 @@
 
 const CONFIG = {
   // Google スプレッドシートの公開 CSV URL（設定するまでは空のまま）
-  SHEETS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLWS71ncomeCEqiLj8Hber0THWHTc5O_-3dSIqlbEvi-BD_jRejN827wiz19DOgqyAVvxZROtzBB93/pubhtml?gid=1494244772&single=true",
+  SHEETS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLWS71ncomeCEqiLj8Hber0THWHTc5O_-3dSIqlbEvi-BD_jRejN827wiz19DOgqyAVvxZROtzBB93/pub?gid=1494244772&single=true&output=csv",
 
   // サイトタイトル
   SITE_TITLE: "Shunya Nakabayashi",
