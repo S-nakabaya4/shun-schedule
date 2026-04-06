@@ -238,7 +238,7 @@ function renderEventEntry(event) {
   const el = document.createElement("div");
   el.className = "event-entry";
   // 日付 + 時間（1行目）
-  const dateTime = `${formatDate(event.date, event.day)}${event.time ? `<span style="font-weight:400;font-size:13px;"> ${escHtml(event.time)} start</span>` : ""}`;
+  const dateTime = `${formatDate(event.date, event.day)}${event.time ? `<span style="font-weight:400;font-size:15px;"> ${escHtml(event.time)} start</span>` : ""}`;
   // 出演者の改行を <br> に変換
   const membersHtml = event.members
     ? event.members.split(/\n/).map(escHtml).join("<br>")

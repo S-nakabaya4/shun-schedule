@@ -26,7 +26,7 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.8;
@@ -54,7 +54,7 @@ ul { list-style: none; }
 }
 .nav-brand {
   font-family: var(--font-heading);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--color-heading);
   white-space: nowrap;
@@ -64,7 +64,7 @@ ul { list-style: none; }
   gap: 32px;
 }
 .nav-links a {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.12em;
   color: var(--color-muted);
@@ -100,14 +100,14 @@ ul { list-style: none; }
 }
 .hero-name {
   font-family: var(--font-heading);
-  font-size: 48px;
+  font-size: 50px;
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.2;
 }
 .hero-subtitle {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 300;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -131,7 +131,7 @@ ul { list-style: none; }
 }
 .section-title {
   font-family: var(--font-heading);
-  font-size: 29px;
+  font-size: 31px;
   font-weight: 400;
   color: var(--color-heading);
   letter-spacing: 0.08em;
@@ -143,7 +143,7 @@ ul { list-style: none; }
 /* ── Loading / Empty state ──────────────────── */
 .loading, .no-events {
   color: var(--color-muted);
-  font-size: 13px;
+  font-size: 15px;
   padding: 24px 0;
 }
 
@@ -153,7 +153,7 @@ ul { list-style: none; }
 }
 .month-label {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 400;
   color: var(--color-heading);
   margin-bottom: 16px;
@@ -172,7 +172,7 @@ ul { list-style: none; }
 
 /* 1行目: 日付・時間 */
 .event-date-time {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--color-heading);
   line-height: 1.4;
@@ -182,7 +182,7 @@ ul { list-style: none; }
 /* 2行目: 会場（青いリンク風・太字） */
 .event-venue {
   display: block;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: #1a73e8;
   margin-top: 4px;
@@ -191,7 +191,7 @@ ul { list-style: none; }
 
 /* 3行目: 出演者 */
 .event-members {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--color-muted);
   margin-top: 4px;
@@ -200,14 +200,14 @@ ul { list-style: none; }
 
 /* 4行目: チャージ */
 .event-charge {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-muted);
   margin-top: 2px;
 }
 
 /* 5行目: 備考 */
 .event-note {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--color-muted);
   font-style: italic;
   margin-top: 2px;
@@ -221,7 +221,7 @@ ul { list-style: none; }
 }
 .past-title {
   font-family: var(--font-heading);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 400;
   color: var(--color-muted);
   margin-bottom: 28px;
@@ -229,7 +229,7 @@ ul { list-style: none; }
 }
 .past-month-group { margin-bottom: 28px; }
 .past-month-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.12em;
   color: var(--color-muted);
@@ -237,7 +237,7 @@ ul { list-style: none; }
   margin-bottom: 10px;
 }
 .past-event {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-muted);
   padding: 6px 0;
   border-bottom: 1px solid rgba(220, 220, 220, 0.4);
@@ -247,7 +247,7 @@ ul { list-style: none; }
 
 /* ── Profile ────────────────────────────────── */
 .profile-content, .contact-content {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 2;
   color: var(--color-text);
 }
@@ -256,7 +256,7 @@ ul { list-style: none; }
   color: var(--color-muted);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .external-link:hover { color: var(--color-heading); }
 
@@ -266,7 +266,7 @@ ul { list-style: none; }
   margin-top: 20px;
   padding: 12px 32px;
   border: 1px solid var(--color-heading);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.15em;
   font-weight: 600;
   color: var(--color-heading);
@@ -281,7 +281,7 @@ ul { list-style: none; }
 .footer {
   text-align: center;
   padding: 32px 24px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--color-muted);
   border-top: 1px solid var(--color-divider);
   letter-spacing: 0.05em;
@@ -289,8 +289,8 @@ ul { list-style: none; }
 
 /* ── Responsive ─────────────────────────────── */
 @media (max-width: 767px) {
-  .hero-name { font-size: 34px; }
-  .section-title { font-size: 24px; }
+  .hero-name { font-size: 36px; }
+  .section-title { font-size: 26px; }
 
   .nav-links {
     display: none;
@@ -307,13 +307,13 @@ ul { list-style: none; }
   .nav-links li a {
     display: block;
     padding: 12px 24px;
-    font-size: 12px;
+    font-size: 14px;
   }
   .nav-toggle { display: flex; }
 }
 
 @media (max-width: 479px) {
   .hero { padding: 56px 16px 48px; }
-  .hero-name { font-size: 28px; }
+  .hero-name { font-size: 30px; }
   .section { padding: 48px 16px; }
 }
