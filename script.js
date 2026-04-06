@@ -39,6 +39,8 @@ const HEADER_MAP = {
   "開演時間": "time",
   "会場":    "venue",
   "venue":   "venue",
+  "タイトル": "title",
+  "title":   "title",
   "出演者":   "members",
   "出演メンバー": "members",
   "members": "members",
@@ -141,6 +143,7 @@ function parseCSV(csv) {
       day:     get("day"),
       time:    get("time"),
       venue:   get("venue"),
+      title:   get("title"),
       members: get("members"),
       charge:  get("charge"),
       note:    get("note"),
@@ -245,8 +248,9 @@ function renderEventEntry(event) {
     : "";
   el.innerHTML = `
     <div class="event-date-time">${dateTime}</div>
-    ${event.venue   ? `<div class="event-venue">${escHtml(event.venue)}</div>` : ""}
-    ${membersHtml   ? `<div class="event-members">${membersHtml}</div>`        : ""}
+    ${event.venue   ? `<div class="event-venue">${escHtml(event.venue)}</div>`    : ""}
+    ${event.title   ? `<div class="event-title">${escHtml(event.title)}</div>`    : ""}
+    ${membersHtml   ? `<div class="event-members">${membersHtml}</div>`           : ""}
     ${event.charge  ? `<div class="event-charge">${escHtml(event.charge)}</div>`  : ""}
     ${event.note    ? `<div class="event-note">${escHtml(event.note)}</div>`      : ""}
   `;
