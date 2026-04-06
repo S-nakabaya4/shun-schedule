@@ -237,13 +237,16 @@ function renderGrouped(events, containerId, renderFn, isPast = false) {
 function renderEventEntry(event) {
   const el = document.createElement("div");
   el.className = "event-entry";
-  const dateTime = `${formatDate(event.date, event.day)}${event.time ? " " + event.time + " start" : ""}`;
+  // 日付 + 時間（1行目）
+  const dateTime = `${formatDate(event.date, event.day)}${event.time ? `<span style="font-weight:400;font-size:13px;"> ${escHtml(event.time)} start</span>` : ""}`;
+  // 出演者の改行を <br> に変換
+  const membersHtml = event.members
+    ? event.members.split(/\n/).map(escHtml).join("<br>")
+    : "";
   el.innerHTML = `
-    <div class="event-main">
-      <span class="event-date-time">${escHtml(dateTime)}</span>
-      ${event.venue ? `<span class="event-venue"> / ${escHtml(event.venue)}</span>` : ""}
-    </div>
-    ${event.members ? `<div class="event-members">${escHtml(event.members)}</div>` : ""}
+    <div class="event-date-time">${dateTime}</div>
+    ${event.venue   ? `<div class="event-venue">${escHtml(event.venue)}</div>` : ""}
+    ${membersHtml   ? `<div class="event-members">${membersHtml}</div>`        : ""}
     ${event.charge  ? `<div class="event-charge">${escHtml(event.charge)}</div>`  : ""}
     ${event.note    ? `<div class="event-note">${escHtml(event.note)}</div>`      : ""}
   `;

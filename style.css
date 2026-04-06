@@ -165,36 +165,50 @@ ul { list-style: none; }
 .event-entry {
   display: flex;
   flex-direction: column;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(220, 220, 220, 0.5);
+  padding: 20px 0 22px;
+  border-bottom: 1px solid var(--color-divider);
 }
 .event-entry:last-child { border-bottom: none; }
 
-.event-main {
-  font-size: 13px;
+/* 1行目: 日付・時間 */
+.event-date-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-heading);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+/* 2行目: 会場（青いリンク風・太字） */
+.event-venue {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a73e8;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* 3行目: 出演者 */
+.event-members {
+  font-size: 12px;
   font-weight: 400;
-  color: var(--color-text);
+  color: var(--color-muted);
+  margin-top: 4px;
   line-height: 1.6;
 }
-.event-date-time {
-  font-weight: 600;
-  color: var(--color-heading);
-}
-.event-venue {
-  color: var(--color-text);
-}
-.event-members {
-  color: var(--color-muted);
+
+/* 4行目: チャージ */
+.event-charge {
   font-size: 12px;
+  color: var(--color-muted);
   margin-top: 2px;
 }
-.event-charge {
-  color: var(--color-muted);
-  font-size: 12px;
-}
+
+/* 5行目: 備考 */
 .event-note {
-  color: var(--color-muted);
   font-size: 11px;
+  color: var(--color-muted);
   font-style: italic;
   margin-top: 2px;
 }
