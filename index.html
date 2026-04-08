@@ -58,5 +58,25 @@
 
   <script src="config.js"></script>
   <script src="script.js"></script>
+
+  <!-- 埋め込みモード：?embed=1 のとき nav・hero・footer を非表示にし、高さを親に通知 -->
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("embed") === "1") {
+        document.body.classList.add("embed-mode");
+
+        // スケジュール描画後に iframe 高さを親ウィンドウへ通知（Wix 自動リサイズ対応）
+        function notifyHeight() {
+          const h = document.body.scrollHeight;
+          window.parent.postMessage({ type: "iframeHeight", height: h }, "*");
+        }
+        // 初回 + データ読み込み後 + 1秒後の計3回通知
+        notifyHeight();
+        window.addEventListener("load", notifyHeight);
+        setTimeout(notifyHeight, 1500);
+      }
+    })();
+  </script>
 </body>
 </html>
