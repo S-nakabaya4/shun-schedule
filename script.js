@@ -203,6 +203,10 @@ function renderSchedule(events) {
                          .sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
   if (upcoming.length === 0) {
+    const msg = events.length > 0
+      ? `現在、予定されているライブはありません。（登録済み: ${events.length}件）`
+      : "現在、予定されているライブはありません。";
+    document.getElementById("no-events").textContent = msg;
     document.getElementById("no-events").style.display = "block";
   } else {
     renderGrouped(upcoming, "upcoming-container", renderEventEntry);

@@ -303,9 +303,14 @@ body.embed-mode .navbar,
 body.embed-mode .hero,
 body.embed-mode .footer { display: none; }
 
+body.embed-mode {
+  background: #ffffff;
+}
+
 body.embed-mode .section {
   padding-top: 24px;
   margin-top: 0;
+  background: #ffffff;
 }
 
 /* ── Responsive ─────────────────────────────── */
