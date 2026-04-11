@@ -7,7 +7,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'self' https://www.shunyanakabayashi.com https://*.wixsite.com https://*.editorx.com"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
