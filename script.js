@@ -49,6 +49,11 @@ const HEADER_MAP = {
   "料金":    "charge",
   "備考":    "note",
   "note":    "note",
+  "url":     "url",
+  "URL":     "url",
+  "リンク":   "url",
+  "会場URL":  "url",
+  "link":    "url",
 };
 
 // ── データ取得 ────────────────────────────────────────────
@@ -147,6 +152,7 @@ function parseCSV(csv) {
       members: get("members"),
       charge:  get("charge"),
       note:    get("note"),
+      url:     get("url"),
     };
   }).filter(e => e.date !== ""); // 日付が空の行を除外
 }
@@ -252,7 +258,7 @@ function renderEventEntry(event) {
     : "";
   el.innerHTML = `
     <div class="event-date-time">${dateTime}</div>
-    ${event.venue   ? `<div class="event-venue">${escHtml(event.venue)}</div>`    : ""}
+    ${event.venue   ? `<div class="event-venue">${venueHtml(event)}</div>`        : ""}
     ${event.title   ? `<div class="event-title">${escHtml(event.title)}</div>`    : ""}
     ${membersHtml   ? `<div class="event-members">${membersHtml}</div>`           : ""}
     ${event.charge  ? `<div class="event-charge">${escHtml(event.charge)}</div>`  : ""}
@@ -266,11 +272,26 @@ function renderPastEvent(event) {
   const el = document.createElement("div");
   el.className = "past-event";
   const dateTime = `${formatDate(event.date, event.day)}${event.time ? " " + event.time + " start" : ""}`;
-  let text = escHtml(dateTime);
-  if (event.venue)   text += ` / ${escHtml(event.venue)}`;
-  if (event.members) text += ` / ${escHtml(event.members)}`;
-  el.innerHTML = text;
+  let html = escHtml(dateTime);
+  if (event.venue)   html += ` / ${venueHtml(event)}`;
+  if (event.members) html += ` / ${escHtml(event.members)}`;
+  el.innerHTML = html;
   return el;
+}
+
+// http(s) で始まる URL のみを許可（javascript: などのスキームを排除）
+function safeUrl(url) {
+  if (!url) return "";
+  const s = String(url).trim();
+  return /^https?:\/\//i.test(s) ? s : "";
+}
+
+// 会場テキスト（URL があれば <a> でラップ、無ければプレーンテキスト）
+function venueHtml(event) {
+  const venue = escHtml(event.venue);
+  const href  = safeUrl(event.url);
+  if (!href) return venue;
+  return `<a href="${escHtml(href)}" target="_blank" rel="noopener noreferrer">${venue}</a>`;
 }
 
 // XSS 対策の HTML エスケープ

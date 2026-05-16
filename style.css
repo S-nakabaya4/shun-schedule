@@ -14,8 +14,9 @@
   --color-hero-bg: rgba(33, 33, 33, 1);
   --color-past-bg: rgba(248, 248, 248, 1);
 
-  --font-heading: 'Playfair Display', Georgia, serif;
-  --font-body: 'Open Sans', Arial, sans-serif;
+  --font-heading: 'Enriqueta', Georgia, serif;
+  --font-body: 'Droid Serif', 'Noto Serif JP', 'Hiragino Mincho ProN', 'YuMincho', 'MS PMincho', serif;
+  --font-ui: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
 
   --max-width: 860px;
   --nav-height: 60px;
@@ -26,10 +27,11 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
+  font-weight: 400;
   font-size: 15px;
   color: var(--color-text);
   background: var(--color-bg);
-  line-height: 1.8;
+  line-height: 1.4em;
 }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
@@ -54,8 +56,9 @@ ul { list-style: none; }
 }
 .nav-brand {
   font-family: var(--font-heading);
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.4em;
   color: var(--color-heading);
   white-space: nowrap;
 }
@@ -64,9 +67,11 @@ ul { list-style: none; }
   gap: 32px;
 }
 .nav-links a {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4em;
+  letter-spacing: 0.05em;
   color: var(--color-muted);
   transition: color 0.2s;
 }
@@ -100,15 +105,17 @@ ul { list-style: none; }
 }
 .hero-name {
   font-family: var(--font-heading);
-  font-size: 50px;
+  font-size: 60px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+  letter-spacing: 0.01em;
+  line-height: 1.4em;
 }
 .hero-subtitle {
   margin-top: 12px;
+  font-family: var(--font-ui);
   font-size: 15px;
   font-weight: 300;
+  line-height: 1.4em;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   opacity: 0.75;
@@ -131,10 +138,11 @@ ul { list-style: none; }
 }
 .section-title {
   font-family: var(--font-heading);
-  font-size: 31px;
+  font-size: 32px;
   font-weight: 400;
+  line-height: 1.4em;
   color: var(--color-heading);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   margin-bottom: 40px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--color-divider);
@@ -153,8 +161,9 @@ ul { list-style: none; }
 }
 .month-label {
   font-family: var(--font-heading);
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 400;
+  line-height: 1.4em;
   color: var(--color-heading);
   margin-bottom: 16px;
   padding-bottom: 8px;
@@ -175,7 +184,7 @@ ul { list-style: none; }
   font-size: 17px;
   font-weight: 700;
   color: var(--color-heading);
-  line-height: 1.4;
+  line-height: 1.4em;
   letter-spacing: 0.01em;
 }
 
@@ -186,8 +195,12 @@ ul { list-style: none; }
   font-weight: 700;
   color: #1a73e8;
   margin-top: 4px;
-  line-height: 1.4;
+  line-height: 1.4em;
 }
+.event-venue a { color: inherit; text-decoration: none; }
+.event-venue a:hover { text-decoration: underline; }
+.past-event a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.past-event a:hover { color: var(--color-heading); }
 
 /* 3行目: タイトル */
 .event-title {
@@ -197,7 +210,7 @@ ul { list-style: none; }
   font-weight: 400;
   color: #c0392b;
   margin-top: 4px;
-  line-height: 1.4;
+  line-height: 1.4em;
 }
 
 /* 4行目: 出演者 */
@@ -206,22 +219,26 @@ ul { list-style: none; }
   font-weight: 400;
   color: var(--color-muted);
   margin-top: 4px;
-  line-height: 1.6;
+  line-height: 1.5em;
 }
 
 /* 4行目: チャージ */
 .event-charge {
   font-size: 14px;
+  font-weight: 400;
   color: var(--color-muted);
   margin-top: 2px;
+  line-height: 1.4em;
 }
 
 /* 5行目: 備考 */
 .event-note {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 400;
   color: var(--color-muted);
   font-style: italic;
   margin-top: 2px;
+  line-height: 1.4em;
 }
 
 /* ── Past Lives ─────────────────────────────── */
@@ -232,27 +249,31 @@ ul { list-style: none; }
 }
 .past-title {
   font-family: var(--font-heading);
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 400;
+  line-height: 1.4em;
   color: var(--color-muted);
   margin-bottom: 28px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 .past-month-group { margin-bottom: 28px; }
 .past-month-label {
+  font-family: var(--font-ui);
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  line-height: 1.4em;
+  letter-spacing: 0.1em;
   color: var(--color-muted);
   text-transform: uppercase;
   margin-bottom: 10px;
 }
 .past-event {
   font-size: 14px;
+  font-weight: 400;
   color: var(--color-muted);
   padding: 6px 0;
   border-bottom: 1px solid rgba(220, 220, 220, 0.4);
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 .past-event:last-child { border-bottom: none; }
 
@@ -292,7 +313,10 @@ ul { list-style: none; }
 .footer {
   text-align: center;
   padding: 32px 24px;
-  font-size: 13px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.4em;
   color: var(--color-muted);
   border-top: 1px solid var(--color-divider);
   letter-spacing: 0.05em;
@@ -315,8 +339,8 @@ body.embed-mode .section {
 
 /* ── Responsive ─────────────────────────────── */
 @media (max-width: 767px) {
-  .hero-name { font-size: 36px; }
-  .section-title { font-size: 26px; }
+  .hero-name { font-size: 44px; }
+  .section-title { font-size: 28px; }
 
   .nav-links {
     display: none;
@@ -340,6 +364,6 @@ body.embed-mode .section {
 
 @media (max-width: 479px) {
   .hero { padding: 56px 16px 48px; }
-  .hero-name { font-size: 30px; }
+  .hero-name { font-size: 36px; }
   .section { padding: 48px 16px; }
 }
