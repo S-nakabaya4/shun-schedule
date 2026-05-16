@@ -222,6 +222,7 @@ function renderSchedule(events) {
 }
 
 // 月ごとにグループ化して描画
+// 過去ライブは <details>/<summary> でアコーディオン化（初期状態：全て閉じる）
 function renderGrouped(events, containerId, renderFn, isPast = false) {
   const container = document.getElementById(containerId);
   const groups = {};
@@ -233,16 +234,35 @@ function renderGrouped(events, containerId, renderFn, isPast = false) {
   });
 
   Object.entries(groups).forEach(([monthLabel, monthEvents]) => {
-    const groupEl = document.createElement("div");
-    groupEl.className = isPast ? "past-month-group" : "month-group";
+    if (isPast) {
+      // 過去ライブ：<details> でクリック開閉
+      const detailsEl = document.createElement("details");
+      detailsEl.className = "past-month-group";
 
-    const labelEl = document.createElement("div");
-    labelEl.className = isPast ? "past-month-label" : "month-label";
-    labelEl.textContent = monthLabel;
-    groupEl.appendChild(labelEl);
+      const summaryEl = document.createElement("summary");
+      summaryEl.className = "past-month-label";
+      summaryEl.textContent = monthLabel;
+      detailsEl.appendChild(summaryEl);
 
-    monthEvents.forEach(e => groupEl.appendChild(renderFn(e)));
-    container.appendChild(groupEl);
+      const eventsWrap = document.createElement("div");
+      eventsWrap.className = "past-month-events";
+      monthEvents.forEach(e => eventsWrap.appendChild(renderFn(e)));
+      detailsEl.appendChild(eventsWrap);
+
+      container.appendChild(detailsEl);
+    } else {
+      // 今後のライブ：常に展開
+      const groupEl = document.createElement("div");
+      groupEl.className = "month-group";
+
+      const labelEl = document.createElement("div");
+      labelEl.className = "month-label";
+      labelEl.textContent = monthLabel;
+      groupEl.appendChild(labelEl);
+
+      monthEvents.forEach(e => groupEl.appendChild(renderFn(e)));
+      container.appendChild(groupEl);
+    }
   });
 }
 
